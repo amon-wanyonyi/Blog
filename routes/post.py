@@ -1,5 +1,5 @@
 from crypt import methods
-from flask import Blueprint, request
+from flask import Blueprint, render_template, redirect, url_for, request
 
 post_pages = Blueprint("posts", __name__)
 
@@ -10,5 +10,8 @@ def display_post(title: str):
 @post_pages.route("/post/", methods=["GET", "POST"])
 def create_post():
     if request.method == "POST":
-        pass
-    return "Create post page."
+        title = request.form.get("title")
+        content = request.form.get("content")
+        # TODO: We can create the post in our database here
+        return redirect(url_for(".display_post", title=title))
+    return render_template("new_post.html") 
